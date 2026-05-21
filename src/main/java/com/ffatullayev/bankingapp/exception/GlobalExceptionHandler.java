@@ -1,5 +1,6 @@
 package com.ffatullayev.bankingapp.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -77,6 +78,15 @@ public class GlobalExceptionHandler {
     ProblemDetail problem = ProblemDetail.forStatusAndDetail(
         HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     problem.setTitle("Sistem xətası");
+    problem.setProperty("timestamp", Instant.now());
+    return problem;
+  }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ProblemDetail handleDataIntegrity(DataIntegrityViolationException ex) {
+    ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+        HttpStatus.CONFLICT, "Bu məlumat artıq mövcuddur");
+    problem.setTitle("Məlumat Konflikti");
     problem.setProperty("timestamp", Instant.now());
     return problem;
   }
