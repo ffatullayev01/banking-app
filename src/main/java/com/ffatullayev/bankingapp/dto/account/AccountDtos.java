@@ -32,4 +32,30 @@ public class AccountDtos {
     private BigDecimal balance;
     private LocalDateTime createdAt;
   }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class TransferRequest {
+    private String senderIban;
+    private String receiverIban;
+    private BigDecimal amount;
+    private String description;
+  }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class TransactionResponse {
+    private Long id;
+    private String senderIban;
+    private String receiverIban;
+    private BigDecimal amount;
+    private String type;
+    private String status;
+    private String description;
+    private LocalDateTime createdAt;
+  }
 }

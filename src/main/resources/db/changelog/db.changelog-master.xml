@@ -7,5 +7,6 @@
 
     <include file="db/changelog/migrations/001-create-users-table.xml"/>
     <include file="db/changelog/migrations/002-create-accounts-table.xml"/>
+    <include file="db/changelog/migrations/003-create-transactions-table.xml"/>
 
 </databaseChangeLog>
