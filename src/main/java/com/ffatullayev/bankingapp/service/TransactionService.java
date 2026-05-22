@@ -12,11 +12,14 @@ import com.ffatullayev.bankingapp.repository.AccountRepository;
 import com.ffatullayev.bankingapp.repository.TransactionRepository;
 import com.ffatullayev.bankingapp.repository.UserRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -89,8 +92,9 @@ public class TransactionService {
         .orElseThrow(()->new UsernameNotFoundException("İstifadəçi tapılmadı"));
   }
 
-  @Transactional
-  public List<AccountDtos.TransactionResponse> getAccountHistory(String iban) {
+  @Transactional(readOnly = true)
+  public Page<AccountDtos.TransactionResponse> getAccountHistory(
+      String iban, int page, int size) {
     User currentUser = getCurrentUser();
 
     Account account = accountRepository.findByIban(iban)
@@ -100,10 +104,10 @@ public class TransactionService {
       throw new IllegalArgumentException("Bu hesaba giriş icazəniz yoxdur");
     }
 
-    return transactionRepository.findAllByAccountId(account.getId())
-        .stream()
-        .map(this::toResponse)
-        .collect(Collectors.toList());
+    Pageable pageable = PageRequest.of(page, size);
+
+    return transactionRepository.findAllByAccountIdPageable(account.getId(), pageable)
+        .map(this::toResponse);
   }
 
   private AccountDtos.TransactionResponse toResponse(Transaction t) {
