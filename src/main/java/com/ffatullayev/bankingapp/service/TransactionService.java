@@ -1,5 +1,6 @@
 package com.ffatullayev.bankingapp.service;
 
+import com.ffatullayev.bankingapp.annotation.Auditable;
 import com.ffatullayev.bankingapp.dto.account.AccountDtos;
 import com.ffatullayev.bankingapp.dto.event.TransactionEvent;
 import com.ffatullayev.bankingapp.entity.Account;
@@ -35,6 +36,7 @@ public class TransactionService {
   private final UserRepository userRepository;
   private final KafkaProducerService kafkaProducerService;
 
+  @Auditable(action = "TRANSFER")
   @Transactional
   public AccountDtos.TransactionResponse transfer(AccountDtos.TransferRequest request){
 

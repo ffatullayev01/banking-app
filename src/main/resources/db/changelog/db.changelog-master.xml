@@ -9,5 +9,6 @@
     <include file="db/changelog/migrations/002-create-accounts-table.xml"/>
     <include file="db/changelog/migrations/003-create-transactions-table.xml"/>
     <include file="db/changelog/migrations/004-add-version-to-accounts.xml"/>
+    <include file="db/changelog/migrations/005-create-audit-logs-table.xml"/>
 
 </databaseChangeLog>

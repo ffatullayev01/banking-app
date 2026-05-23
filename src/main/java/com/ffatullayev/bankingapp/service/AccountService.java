@@ -1,5 +1,6 @@
 package com.ffatullayev.bankingapp.service;
 
+import com.ffatullayev.bankingapp.annotation.Auditable;
 import com.ffatullayev.bankingapp.dto.account.AccountDtos;
 import com.ffatullayev.bankingapp.entity.Account;
 import com.ffatullayev.bankingapp.entity.User;
@@ -25,6 +26,7 @@ public class AccountService {
   private final UserRepository userRepository;
   private final AccountRepository accountRepository;
 
+  @Auditable(action = "CREATE_ACCOUNT")
   @Transactional
   public AccountDtos.AccountResponse createAccount(AccountDtos.CreateAccountRequest request){
 
