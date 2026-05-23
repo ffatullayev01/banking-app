@@ -1,6 +1,7 @@
 package com.ffatullayev.bankingapp.service;
 
 import com.ffatullayev.bankingapp.dto.account.AccountDtos;
+import com.ffatullayev.bankingapp.dto.event.TransactionEvent;
 import com.ffatullayev.bankingapp.entity.Account;
 import com.ffatullayev.bankingapp.entity.Transaction;
 import com.ffatullayev.bankingapp.entity.User;
@@ -32,6 +33,7 @@ public class TransactionService {
   private final TransactionRepository transactionRepository;
   private final AccountRepository accountRepository;
   private final UserRepository userRepository;
+  private final KafkaProducerService kafkaProducerService;
 
   @Transactional
   public AccountDtos.TransactionResponse transfer(AccountDtos.TransferRequest request){
@@ -80,8 +82,21 @@ public class TransactionService {
         .build();
 
     Transaction saved = transactionRepository.save(transaction);
-    return toResponse(saved);
 
+    TransactionEvent event = new TransactionEvent(
+        saved.getId(),
+        sender.getIban(),
+        receiver.getIban(),
+        saved.getAmount(),
+        saved.getType().name(),
+        saved.getStatus().name(),
+        currentUser.getEmail(),
+        saved.getCreatedAt()
+    );
+
+    kafkaProducerService.sendTransactionEvent(event);
+
+    return toResponse(saved);
   }
 
   private User getCurrentUser(){
