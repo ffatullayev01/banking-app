@@ -59,6 +59,10 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
+
+      - name: Gradle-ə icazə ver
+        run: chmod +x gradlew
+
       - name: Testləri işlət
         run: ./gradlew test
         env:
