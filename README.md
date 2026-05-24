@@ -1,3 +1,55 @@
+# 🏦 Banking App
+
+A production-grade Banking REST API built with Java 21 and Spring Boot 3.
+
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-green)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
+![Kafka](https://img.shields.io/badge/Apache%20Kafka-7.5-black)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
+## 📋 Features
+
+- **JWT Authentication** — Register, login, token refresh with role-based access control
+- **Account Management** — Open current/savings accounts with IBAN generation
+- **Transactions** — Transfer funds between accounts with full history and pagination
+- **Loan Module** — Apply for loans with automatic amortization schedule calculation
+- **Kafka Notifications** — Event-driven email notifications after each transaction
+- **Audit Logging** — Automatic audit trail using Spring AOP
+- **Optimistic Locking** — Concurrent transaction safety
+- **API Documentation** — Interactive Swagger UI
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|---|---|
+| Language | Java 21 |
+| Framework | Spring Boot 3.5 |
+| Security | Spring Security + JWT |
+| Database | PostgreSQL 16 |
+| Migration | Liquibase |
+| Messaging | Apache Kafka |
+| Testing | JUnit 5, Mockito, TestContainers |
+| Documentation | Swagger / OpenAPI 3 |
+| Build | Gradle |
+| Containerization | Docker + Docker Compose |
+| CI/CD | GitHub Actions |
+
+## 🏗️ Architecture
+
+```
+├── controller      # REST endpoints
+├── service         # Business logic
+├── repository      # Data access layer
+├── entity          # JPA entities
+├── dto             # Data Transfer Objects
+├── security        # JWT filter, JwtService
+├── config          # Spring Security, OpenAPI config
+├── exception       # Global exception handler
+├── aspect          # AOP audit logging
+└── annotation      # Custom annotations
+```
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -73,3 +125,16 @@ docker-compose up -d
 - Role-based access control: `ADMIN`, `CUSTOMER`, `EMPLOYEE`
 
 ## 📊 Database Schema
+
+```
+users
+  └── accounts (one-to-many)
+        └── transactions (many-to-many via sender/receiver)
+  └── loans (one-to-many)
+  └── audit_logs (one-to-many)
+```
+
+## 👤 Author
+
+**Farid Fətullayev**
+- GitHub: [@ffatullayev01](https://github.com/ffatullayev01)
